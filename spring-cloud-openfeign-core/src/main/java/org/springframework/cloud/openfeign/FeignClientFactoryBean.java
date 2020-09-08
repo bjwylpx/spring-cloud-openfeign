@@ -257,6 +257,7 @@ class FeignClientFactoryBean
 		Feign.Builder builder = feign(context);
 
 		if (!StringUtils.hasText(this.url)) {
+			//没有指定url时，将name与url关联起来
 			if (!this.name.startsWith("http")) {
 				this.url = "http://" + this.name;
 			}
@@ -273,6 +274,7 @@ class FeignClientFactoryBean
 		String url = this.url + cleanPath();
 		Client client = getOptional(context, Client.class);
 		if (client != null) {
+			//在指定url的情况下，无法使用LoadBalancerFeignClient
 			if (client instanceof LoadBalancerFeignClient) {
 				// not load balancing because we have a url,
 				// but ribbon is on the classpath, so unwrap
